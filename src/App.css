@@ -1,38 +1,115 @@
+
 .App {
+  display: flex;
+  flex-direction: column;
   text-align: center;
+  min-width: 480px;
+  max-width: 1280px;
+  height: 100%;
+
+  font-size: medium;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.Navigation {
+  display: flex;
+  justify-content: center;
+  border-style: solid;
+  border-color: #999;
+  border-width: 1px 0px 0px 1px;
+}
+.Tab {
+  padding: 15px 30px;
+  flex: 1;
+  user-select: none;
+  border-style: solid;
+  border-color: #999;
+  border-width: 0px 1px 1px 0px;
+  cursor: pointer;
+}
+.Tab.selected {
+  border-width: 0px 1px 0px 0px;
+}
+.TabLabel {
+  white-space: nowrap;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.List {
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.ListItem {
+  border: 1px solid #999;
+  border-top: none;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px;
+}
+.ListPostfix {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  height: 100%;
 }
 
-.App-link {
-  color: #61dafb;
+.Book {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+.Book .author {
+  text-align: left;
+}
+.Book .title-block {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+
+  font-weight: 900;
+}
+.Book .title {
+  font-size: large;
+  text-align: left;
+}
+.Book .next-state-btn {
+  white-space: nowrap;
+  padding-left: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+.Book .next-state-btn .label {
+  text-decoration: underline;
+}
+.Book .description {
+  text-align: left;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  width: 90%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.tags {
+  display: inline;
+}
+.Tag {
+  background: #ddd;
+  padding: 5px;
+  margin-top: 5px;
+  margin-right: 10px;
+  cursor: pointer;
+  user-select: none;
+  width: fit-content;
+  display: inline-block;
+}
+
+.Filters {
+  user-select: none;
+  text-align: left;
+  padding: 20px;
+}
+.clear-btn {
+  text-decoration: underline;
+  cursor: pointer;
 }
