@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from "react";
+import { useReducer, useEffect, useRef } from "react";
 
 const dataFetchReducer = (state, action) => {
     switch (action.type) {
@@ -51,16 +51,17 @@ export const useLoadDataEffect = (filename, setInfo, setResult) => {
         return () => { didCancel = true; };
     }, [url]);
 
-    useEffect(
-        () => setInfo(state.isError 
+    useEffect(() => {
+        setInfo(state.isError 
             ? 'Error occurred!' 
             : state.isLoading ? 'Loading..'
-            : null), 
-        [state.isError, state.isLoading, setInfo]
-    );
+            : null);
+    }, [state.isError, state.isLoading, setInfo]);
 
-    useEffect(
-        () => setResult(state.items),
-        [state.items, setResult]
-    );
+    const firstTime = useRef(true);
+    useEffect(() => {
+        firstTime.current
+            ? firstTime.current = false
+            : setResult(state.items);
+    }, [state.items, setResult]);
 }

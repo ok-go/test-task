@@ -4,27 +4,23 @@ import { DONE, IN_PROGRESS, TO_READ } from './utils/statuses';
 
 const Navigation = ({
     selectedTab,
-    getSize,
     onTabClick
 }) => (
     <header className='Navigation'>
         <Tab 
-            name='To read'
-            count={getSize(TO_READ)}
-            isChecked={selectedTab === TO_READ}
-            onClick={() => onTabClick(TO_READ)}
+            tab={TO_READ}
+            selected={selectedTab}
+            onClick={onTabClick}
         />
         <Tab 
-            name='In progress'
-            count={getSize(IN_PROGRESS)}
-            isChecked={selectedTab === IN_PROGRESS}
-            onClick={() => onTabClick(IN_PROGRESS)}
+            tab={IN_PROGRESS}
+            selected={selectedTab}
+            onClick={onTabClick}
         />
         <Tab 
-            name='Done'
-            count={getSize(DONE)}
-            isChecked={selectedTab === DONE}
-            onClick={() => onTabClick(DONE)}
+            tab={DONE}
+            selected={selectedTab}
+            onClick={onTabClick}
         />
     </header>
 );

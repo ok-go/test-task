@@ -14,7 +14,7 @@ export default function List(props) {
     });
 
     let postfix = props.postfix && <ListPostfix>{props.postfix}</ListPostfix>;
-    if (items.length === 0 && !postfix) {
+    if (items && items.length === 0 && !postfix) {
         postfix = <ListPostfix>List is empty</ListPostfix>;
     }
 

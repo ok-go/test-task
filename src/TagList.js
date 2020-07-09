@@ -6,7 +6,7 @@ const Tag = ({ name, onClick }) => (
 
 const TagList = ({tags, onTagClick }) => (
     <div className='tags'>
-        {tags.map(tag => 
+        {[...tags].map(tag => 
             <Tag 
                 key={tag} 
                 name={tag} 

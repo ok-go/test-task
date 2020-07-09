@@ -1,17 +1,28 @@
 import React from 'react';
+import { statusLabel } from './utils/statuses';
+import { useSelector } from 'react-redux';
+import { selectBooksLength } from './reducers/booksReducer';
 
-function TabLabel({ name, count, isChecked }) {
-    const label = `${name} (${count})`;
+const TabLabel = ({ tab, isChecked }) => {
+    const count = useSelector(state => selectBooksLength(state, tab));
+    const name = statusLabel[tab];
+    
     const bold = isChecked ? 'bold' : '';
-    const className = `TabLabel ${bold}`
-    return (<span className={className}>{label}</span>);
+    const className = `TabLabel ${bold}`;
+
+    return (
+        <span className={className}>{name} ({count})</span>
+    );
 }
 
-function Tab(props) {
-    const className = `Tab ${props.isChecked ? 'selected' : ''}`;
+const Tab = ({ tab, selected, onClick }) => {
+    const isChecked = tab === selected;
+    
+    const className = `Tab ${isChecked ? 'selected' : ''}`;
+
     return (
-        <div className={className} onClick={props.onClick}>
-          <TabLabel name={props.name} count={props.count} isChecked={props.isChecked}/>
+        <div className={className} onClick={() => onClick(tab)}>
+          <TabLabel tab={tab} isChecked={isChecked}/>
         </div>
     );
 }

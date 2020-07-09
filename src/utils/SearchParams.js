@@ -68,7 +68,12 @@ class SearchParams {
     }
 
     setTags = (tags) => {
-        this.params.set(PARAM_TAGS, [...tags].join(','));
+        const tags_str = [...tags].join(',');
+        if (tags_str !== '') {
+            this.params.set(PARAM_TAGS, tags_str);
+        } else {
+            this.params.delete(PARAM_TAGS);
+        }
 
         return this;
     }

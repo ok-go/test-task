@@ -1,59 +1,60 @@
-import React, { useState, useReducer, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import './App.css';
 import Book from './Book';
 import List from './List';
 import Filters from './Filters';
 import Navigation from './Navigation';
-import { useQueryState, useQueryReducer } from './utils/Query';
-import { TO_READ, IN_PROGRESS, DONE } from './utils/statuses';
-import { itemsSet, tagsSet, tagsClean, tagsRemove, itemsMove, tagsAdd } from './actions';
+import { useQueryState } from './utils/Query';
+import { TO_READ } from './utils/statuses';
 import { useLoadDataEffect } from './utils/loader';
-import { tagsReducer, itemsReducer } from './reducers';
-import { selectItems } from './selectors';
-
-const initialItems = {
-    items: {},
-    ids: [],
-    [TO_READ]: [],
-    [IN_PROGRESS]: [],
-    [DONE]: [],
-}
+import { useDispatch, useSelector } from 'react-redux';
+import { selectBooks, setBooks, bookMoveNext } from './reducers/booksReducer';
 
 const App = () => {
-    const [state, dispatchItems] = useReducer(itemsReducer, initialItems);
-    const [tags, dispatchTags] = useQueryReducer(new Set(), 'tags', tagsReducer, tagsSet);
-    const [tab, setTab] = useQueryState(TO_READ, 'tab');
     const [info, setInfo] = useState(null);
-    
+
+    const [tab, setTab] = useQueryState(TO_READ, 'tab');
+    const [tags, setTags] = useQueryState(new Set(), 'tags');
+
+    const books = useSelector(state => selectBooks(state, tab, tags));
+    const dispatch = useDispatch();
+
     useLoadDataEffect(
         '10-items.json', 
         setInfo,
-        useCallback((items) => dispatchItems(itemsSet(items)), [])
+        useCallback(items => {
+            dispatch(setBooks(items));
+        }, [dispatch])
     );
 
-    const items = selectItems(state, tab, tags);
     const filters = tags.size > 0 
         && <Filters 
             key='filters' 
-            filters={[...tags]} 
-            clear={() => dispatchTags(tagsClean())} 
-            onTagClick={(tag) => dispatchTags(tagsRemove(tag))} />;
+            filters={tags} 
+            clear={() => setTags(new Set())} 
+            onTagClick={(tag) => setTags(tags => {
+                const next = new Set(tags);
+                tags.delete(tag);
+                return next;
+            })} />;
 
     return (
         <div className='App'>
             <Navigation
                 selectedTab={tab}
-                getSize={tab => state[tab].length}
                 onTabClick={setTab}
             />
             <List prefix={filters} postfix={info}>
-                { items.map(book => 
+                {books.map(book => 
                     <Book 
                         key={book.id} 
                         info={book} 
                         status={tab} 
-                        addFilter={(tag) => dispatchTags(tagsAdd(tag))}
-                        moveNext={(id) => dispatchItems(itemsMove(id))}
+                        addFilter={tag => setTags(tags => {
+                            const next = new Set(tags);
+                            return next.add(tag);
+                        })}
+                        moveNext={id => dispatch(bookMoveNext(id))}
                     />)}
             </List>
         </div>

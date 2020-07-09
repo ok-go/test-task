@@ -1,5 +1,5 @@
 import SearchParams from "./SearchParams";
-import { useState, useEffect, useReducer, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { isIterable } from "./common";
 
 const usePopstateEffect = (key, setter) => (
@@ -37,14 +37,4 @@ export const useQueryState = (initialState, query) => {
     useUpdateQueryEffect(query, state);
 
     return [state, setState];
-};
-
-export const useQueryReducer = (initialState, query, reducer, setterAction) => {
-    const searchParams = new SearchParams(window.location.search);
-    const [state, dispatch] = useReducer(reducer, searchParams.get(query) ?? initialState);
-
-    usePopstateEffect(query, useCallback((value) => dispatch(setterAction(value)), [setterAction]));
-    useUpdateQueryEffect(query, state);
-
-    return [state, dispatch];
 };

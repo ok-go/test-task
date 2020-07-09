@@ -24,7 +24,6 @@ const MoveNextButton = ({ onClick, label, icon }) => (
 );
 
 const Book = ({ info, status, addFilter, moveNext }) => {
-    const uniqueTags = [...(new Set(info.tags))];
     return (
         <div className='Book'>
             <Author name={info.author}/>
@@ -33,7 +32,7 @@ const Book = ({ info, status, addFilter, moveNext }) => {
                 <MoveNextButton {...mapStatusToProps[status]} onClick={() => moveNext(info.id)}/>
             </div>
             {info.description && <div className='description'>{info.description}</div>}
-            <TagList tags={uniqueTags} onTagClick={addFilter}/>
+            <TagList tags={info.tags} onTagClick={addFilter}/>
         </div>
     );
 }
